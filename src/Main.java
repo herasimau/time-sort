@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 /**
 
  Решение задачи : http://vk.com/java_problems?w=wall-60560229_939
- 
+
  Дано определенное количество различных состояний цифровых часов в формате чч::мм::cc
  Необходимо вывести их на экран таким образом, чтобы каждое новое состояние было больше (позже), чем предыдущее.
 
@@ -64,7 +64,6 @@ public class Main  {
 
             List sortedKeys=new ArrayList(data.keySet());
             Collections.sort(sortedKeys);
-            Iterator<Map.Entry<Integer, int[]>> it = data.entrySet().iterator();
 
             for (int i = 0; i < sortedKeys.size(); i++) {
                  int[] temp = data.get(sortedKeys.get(i));
