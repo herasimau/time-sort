@@ -36,20 +36,28 @@ import java.util.stream.Stream;
 
 public class Main  {
 
-    private final static String TIME_ERROR = "Error in time format";
+    private final static String ERROR_HOURS = "Error in time format hours";
+    private final static String ERROR_MINUTES = "Error in time format minutes";
+    private final static String ERROR_SECONDS = "Error in time format seconds";
+    private final static String ERROR_LENGTH = "Error in time format length";
     private final static String FILE_PATH = "D:/input.txt";
     private final static String OUTPUT_PATH = "D:/output.txt";
-
+    public static boolean timeError;
 
     public static void main(String[] args) throws IOException, UncheckedIOException {
 
         long startTime = System.currentTimeMillis();
         ArrayList<int[]> input = convertInputData(FILE_PATH);
-        HashMap<Integer, int[]> sortedData = sortData(input);
-        writeSortedData(sortedData,OUTPUT_PATH);
-        long endTime   = System.currentTimeMillis();
-        long totalTime = (endTime - startTime);
-        System.out.println("Data sort took "+totalTime+" milliseconds.");
+        if(!timeError){
+            HashMap<Integer, int[]> sortedData = sortData(input);
+            writeSortedData(sortedData,OUTPUT_PATH);
+            long endTime   = System.currentTimeMillis();
+            long totalTime = (endTime - startTime);
+            System.out.println("Data sort took "+totalTime+" milliseconds.");
+        }
+        else {
+            System.out.println("Program error during converting data.");
+        }
 
     }
 
@@ -115,16 +123,41 @@ public class Main  {
                 stream.forEach(s -> {
 
                             String[] strArray = s.split(" : ");
+                            if(strArray.length>3){
+                                System.out.println(ERROR_LENGTH);
+                                timeError = true;
+                                return;
+                            }
                             int[] intArray = new int[strArray.length];
-                            for(int i = 0; i < strArray.length; i++) {
-                                if(checkTime(Integer.parseInt(strArray[i]))){
-                                    intArray[i] = Integer.parseInt(strArray[i]);
+                            if(checkHH(Integer.parseInt(strArray[0]))) {
+                                intArray[0] = Integer.parseInt(strArray[0]);
+                                if(checkMMandSS(Integer.parseInt(strArray[1]))){
+                                    intArray[1] = Integer.parseInt(strArray[1]);
+                                    if(checkMMandSS(Integer.parseInt(strArray[2]))){
+                                        intArray[2] =  Integer.parseInt(strArray[2]);
+                                    }
+                                    else {
+                                        System.out.println(ERROR_SECONDS);
+                                        stream.close();
+                                        timeError = true;
+                                        return;
+                                    }
                                 }
                                 else {
-                                    System.out.println(TIME_ERROR);
+                                    System.out.println(ERROR_MINUTES);
                                     stream.close();
+                                    timeError = true;
+                                    return;
                                 }
                             }
+                    else {
+                                System.out.println(ERROR_HOURS);
+                                stream.close();
+                                timeError = true;
+                                return;
+                            }
+
+
                             input.add(intArray);
 
 
@@ -132,21 +165,25 @@ public class Main  {
                         }
 
                 );
-
+                if(!timeError){
                 System.out.println("Data converted successfully.");
+                }
             } catch (UncheckedIOException e) {
-                e.printStackTrace();
+
             }
         } catch (IOException e) {
-            e.printStackTrace();
+
         }
 
         return input;
     }
 
-    public static boolean checkTime(int time){
-        return time<=60?true:false;
-
+    public static boolean checkHH(int hours){
+        return hours<24?true:false;
     }
+    public static boolean checkMMandSS(int time){
+        return time<60?true:false;
+    }
+
 
 }
