@@ -198,7 +198,7 @@ public class Main  {
 
 
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Error during generating random data.");
         }
     }
 
