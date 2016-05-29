@@ -46,6 +46,7 @@ public class Main  {
 
     public static void main(String[] args) throws IOException, UncheckedIOException {
 
+        generateRandomData(FILE_PATH);
         long startTime = System.currentTimeMillis();
         ArrayList<int[]> input = convertInputData(FILE_PATH);
         if(!timeError){
@@ -178,9 +179,33 @@ public class Main  {
         return input;
     }
 
+    public static void  generateRandomData(String outputPath){
+        try {
+            System.out.println("Start generating random data...");
+            FileWriter  fstream = new FileWriter(outputPath);
+            BufferedWriter out = new BufferedWriter(fstream);
+
+            int rangeHH = 24;
+            int rangeSSandMM = 60;
+
+            for (int i = 0; i < 36000; i++) {
+
+                out.write((int)(Math.random() * rangeHH)+" : "+(int)(Math.random() * rangeSSandMM)+" : "+(int)(Math.random() * rangeSSandMM)+ System.lineSeparator());
+
+            }
+            System.out.println("Random data created.");
+            out.close();
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static boolean checkHH(int hours){
         return hours<24?true:false;
     }
+
     public static boolean checkMMandSS(int time){
         return time<60?true:false;
     }
