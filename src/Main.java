@@ -46,15 +46,15 @@ public class Main  {
 
     public static void main(String[] args) throws IOException, UncheckedIOException {
 
-        generateRandomData(FILE_PATH);
-        long startTime = System.currentTimeMillis();
-        ArrayList<int[]> input = convertInputData(FILE_PATH);
-        if(!timeError){
-            HashMap<Integer, int[]> sortedData = sortData(input);
-            writeSortedData(sortedData,OUTPUT_PATH);
+        generateRandomData(FILE_PATH); //Генерируем исходную информацию для последующей сортировки
+        long startTime = System.currentTimeMillis(); // замеряем время, чтобы потом подсчитать сколько времени затратила программа на сортировку
+        ArrayList<int[]> input = convertInputData(FILE_PATH); //конвертируем исходные данные в лист массивов
+        if(!timeError){ // если исходные данные соответствуют условию продолжаем работу
+            HashMap<Integer, int[]> sortedData = sortData(input); //преобразовываем лист к мапе, вида (ключ-время в секундах, значение-массив чисел)
+            writeSortedData(sortedData,OUTPUT_PATH);//сохраняем в файл отсортированную мапу по ключу.
             long endTime   = System.currentTimeMillis();
             long totalTime = (endTime - startTime);
-            System.out.println("Data sort took "+totalTime+" milliseconds.");
+            System.out.println("Data sort took "+totalTime+" milliseconds.");// время выполнения программы
         }
         else {
             System.out.println("Program error during converting data.");
